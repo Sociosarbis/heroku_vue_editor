@@ -18,11 +18,11 @@ COPY --from=build-client /usr/src/app/dist /usr/share/nginx/html
 COPY --from=build-client /usr/src/app/nginx.conf /etc/nginx/conf.d/default.conf
 COPY server/requirements.txt ./
 RUN pip install -r requirements.txt && alembic init alembic
-ENV PYTHONPATH=.
+ENV PYTHONPATH=. \
+  FLASK_APP=app
 COPY server/template.env.py alembic/env.py
 COPY server .
 EXPOSE 80
-CMD alembic revision --autogenerate -m"migrate" && alembic upgrade head && \ 
-  gunicorn -c "python:config.gunicorn" app:app --daemon && \
+CMD gunicorn -c "python:config.gunicorn" app:app --daemon && \
   sed -i -e "s/\$PORT/${PORT}/g" /etc/nginx/conf.d/default.conf && \
   nginx -g "daemon off;"

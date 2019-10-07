@@ -36,5 +36,14 @@ def sign_up():
       return jsonify({'msg': 'the length of password must be over 6'})
   return jsonify({ 'msg': 'request data is invalid' })
 
+@app.cli.command('seed')
+def seed():
+  sess = Session()
+  for name in ["familiar", "unfamiliar", "not sure"]:
+    res = sess.query(Tag).filter(Tag.name == name).first()
+    if not res:
+      sess.add(Tag(name=name))
+  sess.commit()
+
 if __name__ == '__main__':
   app.run(host='localhost', port=8888, debug=True)

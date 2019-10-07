@@ -1,0 +1,6 @@
+{
+  "scripts":{
+    "post-deploy": "flask seed"
+  },
+  "stack": "container"
+}

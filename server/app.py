@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_bcrypt import Bcrypt
 from serializers import tags_schema
-from db import Session, Tag, User, English, User_English_link
+from db import engine, Session, Tag, User, English, User_English_link
 
 app = Flask(__name__)
 bcrypt = Bcrypt()
@@ -35,6 +35,16 @@ def sign_up():
     else:
       return jsonify({'msg': 'the length of password must be over 6'})
   return jsonify({ 'msg': 'request data is invalid' })
+
+@app.cli.command('clear-migration-versions')
+def clear_migration_versions():
+  with engine.connect() as conn:
+    is_exists = conn.execute(
+      "select exists (select 1 from information_schema.tables where table_name = '?')",
+      "alembic_version"
+     ).fetchone()[0]
+    if is_exists:
+      conn.execute('delete from alembic_version')
 
 @app.cli.command('seed')
 def seed():

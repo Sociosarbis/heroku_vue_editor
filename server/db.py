@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, Table, Column, Integer, String, Text, Fore
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, backref
 
-DEFAULT_DATABASE_URL = '//postgres:Pg_music71016@host.docker.internal:5432/heroku_app'
+DEFAULT_DATABASE_URL = f"//postgres:Pg_music71016@{os.getenv('DB_HOST', 'localhost')}:5432/heroku_app"
 DATABASE_URL = os.getenv('DATABASE_URL', DEFAULT_DATABASE_URL)
 engine = create_engine(
   urlparse(DATABASE_URL)

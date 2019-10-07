@@ -19,7 +19,8 @@ COPY --from=build-client /usr/src/app/nginx.conf /etc/nginx/conf.d/default.conf
 COPY server/requirements.txt ./
 RUN pip install -r requirements.txt && alembic init alembic
 ENV PYTHONPATH=. \
-  FLASK_APP=app
+  FLASK_APP=app \
+  DB_HOST=host.docker.internal
 COPY server/template.env.py alembic/env.py
 COPY server .
 EXPOSE 80

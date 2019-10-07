@@ -3,5 +3,5 @@ build:
     web: Dockerfile
 release:
   command:
-    - ./deployment-tasks.sh
+    - chmod u+x deployment-tasks.sh && ./deployment-tasks.sh
   image: web

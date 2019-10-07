@@ -13,7 +13,7 @@ RUN apk update && apk add --no-cache python3 && \
   if [ ! -e /usr/bin/pip ] ; then ln -s pip3 /usr/bin/pip ; fi && \
   if [ ! -e /usr/bin/python ] ; then ln -sf /usr/bin/python3 /usr/bin/python ; fi && \
   if [ -e /root/.cache ] ; then rm -r /root/.cache ; fi
-RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev libffi-dev
+RUN apk update && apk add curl postgresql-dev gcc python3-dev musl-dev libffi-dev
 COPY --from=build-client /usr/src/app/dist /usr/share/nginx/html
 COPY --from=build-client /usr/src/app/nginx.conf /etc/nginx/conf.d/default.conf
 COPY server/requirements.txt ./
